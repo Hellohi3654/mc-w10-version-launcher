@@ -1,0 +1,45 @@
+name: MSBuild
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Build'
+        required: true
+        default: 'Build'
+      home:
+        description: 'location'
+        required: false
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    
+    steps:
+    - uses: actions/checkout@v2.3.2
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.1
+      
+    - name: Setup Nuget
+      uses: nuget/setup-nuget@v1
+      with:
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.x'
+      
+    - name: Run Nuget
+      run: nuget restore MCLauncher.sln
+
+    - name: MSBuild
+      run: msbuild MCLauncher.sln -m
+      
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      if: success()
+      with:
+          name: MCLauncher
+          path: MCLauncher\bin\Debug\
