@@ -152,7 +152,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\x64\Debug\WUTokenHelper.dll">
+    <Content Include="..\Debug\WUTokenHelper.dll">
       <Link>WUTokenHelper.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
